@@ -1,0 +1,100 @@
+<%- layout("/layouts/boilerplat") %>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <h3 class="mb-3 text-center"><%= List.title %></h3>
+
+      <div class="card shadow-sm">
+        <img
+          src="<%= List.image %>"
+          class="card-img-top show-img"
+          alt="listing-image"
+        />
+
+        <div class="card-body">
+          <p class="card-text">
+            <b></b><br />
+            <%= List.description %><br /><br />
+
+            <b>&#8377;<%= List.price.toLocaleString("en-IN") %></b><br />
+            <%= List.location %>, <%= List.country %>
+          </p>
+
+          <div class="d-flex gap-2 mt-3">
+            <a
+              href="/Listing/<%= List._id %>/edit"
+              class="btn btn-outline-dark"
+            >
+              Edit
+            </a>
+
+            <form
+              method="post"
+              action="/Listing/<%= List._id %>?_method=DELETE"
+            >
+              <button class="btn btn-danger">Delete</button>
+            </form>
+          </div>
+          <div>
+            <hr />
+            <h4>Add your Review</h4>
+            <form
+              method="post"
+              action="/Listing/<%=List._id %>/review"
+              class="needs-validation"
+              novalidate
+            >
+              <div>
+                <label for="Rating">Rating</label>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  id="Rating"
+                  name="reviews[rating]"
+                />
+              </div>
+              <br />
+              <div>
+                <!--  this name = [Comments] is also match to the models Commants -->
+                <textarea
+                  id="Commants"
+                  name="reviews[Comment]"
+                  cols="30"
+                  rows="4"
+                  class="form-control"
+                  required
+                ></textarea>
+                <div class="invalid-feedback">Please enter your Commants.</div>
+                <label for="Commants" class="form-label">Commants</label>
+              </div>
+              <button class="btn btn-danger">Submit</button>
+            </form>
+          </div>
+          <hr />
+          <br />
+          <p><b>All Reviews</b></p>
+           <div class="row">
+            <% for(review of List.reviews) { %>
+              <div class="card review-card col-5 ms-3 mb-3">
+                  <div class="card-body">
+                      <h5 class="card-title">Jane Doe</h5>
+                      <p class="card-text"><%= review.Comment %></p>
+                      <p class="card-text"><%= review.rating %> Stars</p>
+                  </div>
+                  <form method="POST" action="/Listing/<%=List._id%>/<%=review._id%>/reviews/delete/?_method=DELETE"> 
+                       <button type="submit" class="btn">
+                         <span class="material-symbols-outlined">delete_forever</span>
+                      </button>
+                  </form>
+              </div>
+            <% } %>
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/JS/formValidate.js"></script>

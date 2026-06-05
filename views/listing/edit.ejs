@@ -1,0 +1,102 @@
+<% layout("/layouts/boilerplat") -%>
+
+<div class="container my-3">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <h2 class="mb-4 text-center">Edit Listing</h2>
+
+      <form
+        method="post"
+        action="/Listing/<%= alllist._id %>?_method=PUT"
+        class="needs-validation"
+        novalidate
+      >
+        <div class="mb-3">
+          <label for="Title" class="form-label">Title</label>
+          <input
+            type="text"
+            name="Listing[title]"
+            class="form-control"
+            id="Title"
+            value="<%= alllist.title %>"
+            required
+          />
+          <div class="invalid-feedback">Please provide a title.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="Description" class="form-label">Description</label>
+          <textarea
+            rows="5"
+            name="Listing[description]"
+            class="form-control"
+            id="Description"
+            required
+          >
+<%= alllist.description %></textarea
+          >
+
+          <div class="invalid-feedback">Please enter a description.</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="Img" class="form-label">Image URL</label>
+          <input
+            type="text"
+            name="Listing[image]"
+            class="form-control"
+            id="Img"
+            value="<%= alllist.image %>"
+            required
+          />
+          <div class="invalid-feedback">Please enter an image URL.</div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="Price" class="form-label">Price</label>
+            <input
+              type="number"
+              name="Listing[price]"
+              class="form-control"
+              id="Price"
+              value="<%= alllist.price %>"
+              required
+            />
+            <div class="invalid-feedback">Please enter a valid price.</div>
+          </div>
+
+          <div class="mb-3 col-md-8">
+            <label for="Location" class="form-label">Location</label>
+            <input
+              type="text"
+              name="Listing[location]"
+              class="form-control"
+              id="Location"
+              value="<%= alllist.location %>"
+              required
+            />
+            <div class="invalid-feedback">Please provide a location.</div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="Country" class="form-label">Country</label>
+          <input
+            type="text"
+            name="Listing[country]"
+            class="form-control"
+            id="Country"
+            value="<%= alllist.country %>"
+            required
+          />
+          <div class="invalid-feedback">Please provide a country.</div>
+        </div>
+
+        <button class="btn btn-dark w-100">Update Listing</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="/JS/formValidate.js"></script>
