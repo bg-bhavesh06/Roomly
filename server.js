@@ -213,7 +213,7 @@ app.delete(
   }),
 );
 
-//Adding the Review Route to connect the listing Modle Route-F1
+//Adding the Review Route to connect the listing Modle Route- F
 app.post(
   "/Listing/:id/review",
   serverValidateReviews,
@@ -222,18 +222,18 @@ app.post(
     // console.log(rev);
 
     let newReview = new Review(req.body.reviews); //inserting the review Data inthe Review Model...
-    // console.log(newReview);
+    console.log(newReview);
 
     rev.reviews.push(newReview);
 
-    await newReview.save();
+    await newReview.save(); //wait for adding the reviews data in the reviews Model
     let ans = await rev.save();
-    console.log(ans);
+    // console.log(ans);
     res.redirect(`/Listing/${rev._id}`);
   }),
 );
 
-//Delete The Review Route-F2
+//Delete The Review Route-G
 app.delete(
   "/Listing/:Listid/reviews/:Reviewid/delete",
   WrapAsync(async (req, res) => {
@@ -255,7 +255,7 @@ app.use((req, res) => {
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Internal Server Error" } = err;
-  res.status(statusCode).render("listing/middlewareError.ejs", { message });
+  res.status(statusCode).render("./listing/middlewareError.ejs", { message });
 });
 
 app.listen(port, () => {
