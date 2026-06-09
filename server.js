@@ -61,13 +61,7 @@ connectDB();
 
 //server validate function for listings.(Comming Form PostMan and Hocpcsock)
 function serverValidateListings(req, res, next) {
-  let { error } = ListingSchema.validate(req.body);
-
-  let { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    console.log("Incorrect id");
-    return next(new ExpressError(404, "Invalid Formate"));
-  }
+  let { error, value } = ListingSchema.validate(req.body);
 
   if (error && value) {
     console.dir(error);
@@ -83,12 +77,6 @@ function serverValidateListings(req, res, next) {
 //ServerSide Validation function for reviews .(Comming Form PostMan and Hocpcsock)
 function serverValidateReviews(req, res, next) {
   let { error, value } = ReviewSchema.validate(req.body);
-
-  const { id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    console.log("Incorrect id");
-    return next(new ExpressError(404, "Invalid ID format"));
-  }
 
   if (error && value) {
     console.dir(error);
@@ -120,6 +108,11 @@ function serverValidateReviews(req, res, next) {
 //   console.log("sample was saved", saved);
 //   res.send("sample data insrted");
 // });
+
+// home Route...
+app.get("/", (req, res) => {
+  res.redirect("/Listing");
+});
 
 // display the list route-A...
 app.get(
@@ -255,11 +248,6 @@ app.delete(
     res.redirect(`/Listing/${Listid}`);
   }),
 );
-
-// home Route...
-app.get("/", (req, res) => {
-  res.redirect("/Listing");
-});
 
 app.use((req, res) => {
   res.status(404).render("listing/PageError.ejs");
