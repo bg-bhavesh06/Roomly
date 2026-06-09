@@ -235,7 +235,7 @@ app.post(
 
 //Delete The Review Route-F2
 app.delete(
-  "/Listing/:Listid/:Reviewid/reviews/delete",
+  "/Listing/:Listid/reviews/:Reviewid/delete",
   WrapAsync(async (req, res) => {
     let { Listid, Reviewid } = req.params;
 

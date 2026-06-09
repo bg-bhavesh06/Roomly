@@ -83,7 +83,7 @@
                       <p class="card-text"><%= review.Comment %></p>
                       <p class="card-text"><%= review.rating %> Stars</p>
                   </div>
-                  <form method="POST" action="/Listing/<%=List._id%>/<%=review._id%>/reviews/delete/?_method=DELETE"> 
+                  <form method="POST" action="/Listing/<%=List._id%>/reviews/<%=review._id%>/delete/?_method=DELETE"> 
                        <button type="submit" class="btn">
                          <span class="material-symbols-outlined">delete_forever</span>
                       </button>
