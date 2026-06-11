@@ -7,7 +7,7 @@
 
       <form
         method="post"
-        action="/Listing/<%= alllist._id %>?_method=PUT"
+        action="/listings/<%= alllist._id %>?_method=PUT"
         class="needs-validation"
         novalidate
       >
@@ -33,7 +33,7 @@
             id="Description"
             required
           >
-<%= alllist.description %></textarea
+              <%= alllist.description %></textarea
           >
 
           <div class="invalid-feedback">Please enter a description.</div>

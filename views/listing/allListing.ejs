@@ -2,6 +2,7 @@
 
 <body>
     <h3>All List's</h3>
+    
     <!-- <form  method="get" action="Listing/new">
         <button>Add List </button>
     </form> -->
@@ -9,7 +10,7 @@
     <!-- Cards Layout -->
 <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
   <% for (let listing of allListing) { %>
-    <a href="/Listing/<%= listing._id%>" class="listing-links">
+    <a href="/listings/<%= listing._id%>" class="listing-links">
     <div class="card col">
       <div class="card h-100">
         <img 

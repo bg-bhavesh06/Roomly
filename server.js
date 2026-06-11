@@ -2,19 +2,18 @@
 const express = require("express");
 const app = express();
 
-//localhost Linke
+//Port Number..
+let port = 8080;
 
-let link = "http://localhost:8080/Listing";
+//localhost Linke
+let link = "http://localhost:8080/listings";
+
+// Mongoose Package
+const mongoose = require("mongoose");
 
 //Method-override Package
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
-
-//Port no..
-let port = 8080;
-
-// Mongoose Package
-const mongoose = require("mongoose");
 
 //Views Folder..
 const path = require("path");
@@ -111,12 +110,12 @@ function serverValidateReviews(req, res, next) {
 
 // home Route...
 app.get("/", (req, res) => {
-  res.redirect("/Listing");
+  res.redirect("/listings");
 });
 
 // display the list route-A...
 app.get(
-  "/Listing",
+  "/listings",
   WrapAsync(async (req, res) => {
     const allListing = await Listing.find({}); //
     res.render("listing/allListing.ejs", { allListing });
@@ -125,19 +124,19 @@ app.get(
 );
 
 //creat list Route-C1
-app.get("/Listing/new", (req, res) => {
+app.get("/listings/new", (req, res) => {
   res.render("listing/creatList.ejs");
 });
 
 // show Listing Route-B...
 app.get(
-  "/Listing/:id",
+  "/listings/:Listid",
   WrapAsync(async (req, res, next) => {
-    const { id } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    const { Listid } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(Listid)) {
       return next(new ExpressError(400, "Invalid ID format"));
     }
-    const List = await Listing.findById(id).populate("reviews");
+    const List = await Listing.findById(Listid).populate("reviews");
     if (!List) {
       return next(new ExpressError(404, "Listing Is Not Found"));
     }
@@ -147,28 +146,28 @@ app.get(
 
 //Add in the list Route-C2...
 app.post(
-  "/Listing",
+  "/listings",
   serverValidateListings,
   WrapAsync(async (req, res) => {
     //this is the long way make the this valuse by Listing objest in creatList.ejs
     // const {title,discription,image,price,location,country} = req.body
     const alllist = new Listing(req.body.Listing);
     await alllist.save();
-    res.redirect("/Listing");
+    res.redirect("/listings");
   }),
 );
 
 // get the value's to Update route-D1
 app.get(
-  "/Listing/:id/edit",
+  "/listings/:Listid/edit",
   WrapAsync(async (req, res, next) => {
-    const { id } = req.params;
+    const { Listid } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(Listid)) {
       return next(new ExpressError(400, "Invalid ID format"));
     }
 
-    const alllist = await Listing.findById(id);
+    const alllist = await Listing.findById(Listid);
     // console.log(alllist);
     if (!alllist) {
       return next(new ExpressError(404, "Listing Is Not Found"));
@@ -179,28 +178,28 @@ app.get(
 
 //Updated List Route-D2...
 app.put(
-  "/Listing/:id",
+  "/listings/:Listid",
   serverValidateListings,
   WrapAsync(async (req, res, next) => {
-    const { id } = req.params;
+    const { Listid } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(Listid)) {
       return next(new ExpressError(400, "Invalid ID format"));
     }
     const updated = req.body.Listing;
-    const ans = await Listing.findByIdAndUpdate(id, updated, { new: true });
+    const ans = await Listing.findByIdAndUpdate(Listid, updated, { new: true });
 
     if (!ans) {
       return next(new ExpressError(404, "Listing Is Not Found"));
     }
     console.log(ans);
-    res.redirect("/Listing");
+    res.redirect("/listings");
   }),
 );
 
 //Delete Route-E...
 app.delete(
-  "/Listing/:ListId/",
+  "/listings/:ListId/",
   WrapAsync(async (req, res, next) => {
     const { ListId } = req.params;
     console.log(ListId);
@@ -212,16 +211,16 @@ app.delete(
     if (!deleted) {
       return next(new ExpressError(404, "Listing Not Found"));
     }
-    res.redirect("/Listing");
+    res.redirect("/listings");
   }),
 );
 
 //Adding the Review Route to connect the listing Modle Route- F
 app.post(
-  "/Listing/:id/review",
+  "/listings/:Listid/review",
   serverValidateReviews,
   WrapAsync(async (req, res) => {
-    let rev = await Listing.findById(req.params.id); //Get that List that user clicked..
+    let rev = await Listing.findById(req.params.Listid); //Get that List that user clicked..
     // console.log(rev);
 
     let newReview = new Review(req.body.reviews); //inserting the review Data inthe Review Model...
@@ -232,13 +231,13 @@ app.post(
     await newReview.save(); //wait for adding the reviews data in the reviews Model
     let ans = await rev.save();
     // console.log(ans);
-    res.redirect(`/Listing/${rev._id}`);
+    res.redirect(`/listings/${rev._id}`);
   }),
 );
 
 //Delete The Review Route-G
 app.delete(
-  "/Listing/:Listid/reviews/:Reviewid/delete",
+  "/listings/:Listid/reviews/:Reviewid/delete",
   WrapAsync(async (req, res) => {
     let { Listid, Reviewid } = req.params;
 
@@ -248,7 +247,7 @@ app.delete(
     //in this why we can replace to write the Mongoose middleware... with ($pull)Operator
     await Listing.findByIdAndUpdate(Listid, { $pull: { reviews: Reviewid } });
 
-    res.redirect(`/Listing/${Listid}`);
+    res.redirect(`/listings/${Listid}`);
   }),
 );
 

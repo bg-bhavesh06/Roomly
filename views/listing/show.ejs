@@ -23,7 +23,7 @@
 
           <div class="d-flex gap-2 mt-3">
             <a
-              href="/Listing/<%= List._id %>/edit"
+              href="/listings/<%= List._id %>/edit"
               class="btn btn-outline-dark"
             >
               Edit
@@ -31,7 +31,7 @@
 
             <form
               method="post"
-              action="/Listing/<%= List._id %>?_method=DELETE"
+              action="/listings/<%= List._id %>?_method=DELETE"
             >
               <button class="btn btn-danger">Delete</button>
             </form>
@@ -41,7 +41,7 @@
             <h4>Add your Review</h4>
             <form
               method="post"
-              action="/Listing/<%=List._id %>/review"
+              action="/listings/<%=List._id %>/review"
               class="needs-validation"
               novalidate
             >
@@ -83,7 +83,7 @@
                       <p class="card-text"><%= review.Comment %></p>
                       <p class="card-text"><%= review.rating %> Stars</p>
                   </div>
-                  <form method="POST" action="/Listing/<%=List._id%>/reviews/<%=review._id%>/delete/?_method=DELETE"> 
+                  <form method="POST" action="/listings/<%=List._id%>/reviews/<%=review._id%>/delete/?_method=DELETE"> 
                        <button type="submit" class="btn">
                          <span class="material-symbols-outlined">delete_forever</span>
                       </button>
