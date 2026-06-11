@@ -5,11 +5,11 @@ const app = express();
 //Port Number..
 let port = 8080;
 
-//reqired the Mongodb Connection
-const { connectDB } = require("./config/db.js");
-
 //localhost Linke
 let link = "http://localhost:8080/listings";
+
+//reqired the Mongodb Connection
+const { connectDB } = require("./config/db.js");
 
 //Method-override Package
 const methodOverride = require("method-override");
