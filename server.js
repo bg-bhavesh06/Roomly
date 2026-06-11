@@ -163,9 +163,11 @@ app.get(
   "/Listing/:id/edit",
   WrapAsync(async (req, res, next) => {
     const { id } = req.params;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(new ExpressError(400, "Invalid ID format"));
     }
+
     const alllist = await Listing.findById(id);
     // console.log(alllist);
     if (!alllist) {
@@ -181,6 +183,7 @@ app.put(
   serverValidateListings,
   WrapAsync(async (req, res, next) => {
     const { id } = req.params;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return next(new ExpressError(400, "Invalid ID format"));
     }

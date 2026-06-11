@@ -1,6 +1,12 @@
 const express = require("express");
-const router = express.Router(); // this .Router(); is build-in method inthe express.
+
 // That return the Router Object.
+// this .Router(); is build-in method in the express.
+const router = express.Router();
+
+//user route
+
+// index-route
 router.get("/", (req, res) => {
   res.send("hii I am a user ");
 });
