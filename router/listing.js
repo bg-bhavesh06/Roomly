@@ -76,7 +76,10 @@ router.post(
     // const {title,discription,image,price,location,country} = req.body
     const alllist = new Listing(req.body.Listing);
     await alllist.save();
-    res.redirect("/listings");
+
+    //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
+    req.flash("show", " New Listing is Added");
+    res.redirect("/listings"); //this redirect is mandantri to decied's where we have to display the msg main's which route
   }),
 );
 
@@ -116,6 +119,8 @@ router.put(
       return next(new ExpressError(404, "Listing Is Not Found"));
     }
     console.log(ans);
+    //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
+    req.flash("show", "Listing is Updated"); //this redirect is mandantri to decied's where we have to display the msg main's which route
     res.redirect("/listings");
   }),
 );
@@ -134,6 +139,9 @@ router.delete(
     if (!deleted) {
       return next(new ExpressError(404, "Listing Not Found"));
     }
+    //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
+    req.flash("show", " Existence list deleted Successfully");
+
     res.redirect("/listings");
   }),
 );

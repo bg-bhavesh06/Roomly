@@ -68,6 +68,10 @@ router.post(
     await newReview.save(); //wait for adding the reviews data in the reviews Model
     let ans = await rev.save();
     console.log(ans);
+
+    //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
+    req.flash("show", "New Review is Added"); //this redirect is mandantri to decied's where we have to display the msg main's which route
+
     res.redirect(`/listings/${rev._id}`);
   }),
 );
@@ -91,6 +95,8 @@ router.delete(
     //in this why we can replace to write the Mongoose middleware... with ($pull)Operator
     await Listing.findByIdAndUpdate(Listid, { $pull: { reviews: Reviewid } });
 
+    //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
+    req.flash("show", "Review is deleted Successfully"); //this redirect is mandantri to decied's where we have to display the msg main's which route
     res.redirect(`/listings/${Listid}`);
   }),
 );

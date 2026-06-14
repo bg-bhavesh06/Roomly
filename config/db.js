@@ -1,6 +1,3 @@
-const express = require("express");
-const app = express();
-
 // Mongoose Package
 const mongoose = require("mongoose");
 

@@ -6,8 +6,13 @@ const app = express();
 let port = 8080;
 
 //localhost Linke
-let link = "http://localhost:8080/listings";
+let link = "http://localhost:8080/erp";
 
+//require the Express-Session...
+const session = require("express-session");
+
+//require the connect-flash for display the short msg to user
+const flash = require("connect-flash");
 //reqired the Mongodb Connection
 const { connectDB } = require("./config/db.js");
 
@@ -30,8 +35,24 @@ app.use(express.static(path.join(__dirname, "/public")));
 //Parse the data
 app.use(express.urlencoded({ extended: true }));
 
-//mongodb is started
-connectDB();
+//Declared the Session to use in the app's
+app.use(
+  session({
+    secret: "bhaveshIsThePowerFull",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 1000 * 60 * 60 * 2 },
+  }),
+);
+
+//method to use the flash
+app.use(flash());
+
+//use the flash middleware to use the flash..
+app.use((req, res, next) => {
+  res.locals.showMsg = req.flash("show");
+  next();
+});
 
 //Requires the Routes
 const listingRoutes = require("./router/listing.js"); //require the listing's route
@@ -42,7 +63,6 @@ app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
-//Using the Route
 app.use("/listings", listingRoutes);
 app.use("/listings/:Listid/reviews", reviewRoutes);
 
@@ -57,6 +77,13 @@ app.use((err, req, res, next) => {
   // next()
 });
 
-app.listen(port, () => {
-  console.log("server is Listen : " + link);
-});
+if (require.main === module) {
+  //mongodb is started
+  connectDB();
+
+  app.listen(port, () => {
+    console.log("server is Listen : " + link);
+  });
+}
+
+module.exports = app;
