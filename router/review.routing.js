@@ -86,12 +86,14 @@ router.delete(
       return next(new ExpressError(404, "ID is not Found"));
     }
 
+    //heare review data is deleted
     let DeletedReview = await Review.findByIdAndDelete(Reviewid);
     // console.log(DeletedReview);
     if (!DeletedReview) {
       return next(new ExpressError(404, "Review is not delted"));
     }
 
+    //hear review id is deleted that present in the Listings schema
     //in this why we can replace to write the Mongoose middleware... with ($pull)Operator
     await Listing.findByIdAndUpdate(Listid, { $pull: { reviews: Reviewid } });
 

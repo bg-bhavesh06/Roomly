@@ -35,6 +35,7 @@ const listenSchema = new Schema({
   },
   reviews: [
     {
+      // Type of _id
       type: mongoose.Schema.Types.ObjectId,
       ref: "Review",
     },
@@ -45,8 +46,11 @@ const listenSchema = new Schema({
 listenSchema.post("findOneAndDelete", async (listing) => {
   if (listing.reviews.length) {
     await Review.deleteMany({ _id: { $in: listing.reviews } });
+    //why we (listing.reviews) beacuse we stored the _id of the each reviews in side the listing schema
   }
 });
+
+// creating the Model
 const Listing = mongoose.model("Listing", listenSchema);
 
 module.exports = Listing;

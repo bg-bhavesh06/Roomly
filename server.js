@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 // Express Package
 const express = require("express");
 const app = express();
@@ -55,8 +57,8 @@ app.use((req, res, next) => {
 });
 
 //Requires the Routes
-const listingRoutes = require("./router/listing.js"); //require the listing's route
-const reviewRoutes = require("./router/review.js"); //require the Review's Route
+const listingRoutes = require("./router/listing.routing.js"); //require the listing's route
+const reviewRoutes = require("./router/review.routing.js"); //require the Review's Route
 
 // home Route...
 app.get("/", (req, res) => {
