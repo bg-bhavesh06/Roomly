@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%= typeof appMode !== "undefined" && appMode === "erp" ? "Mini ERP" : "AirBnb" %></title>
     <link rel="stylesheet" href="/CSS/style.css" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
@@ -29,20 +28,13 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     />
   </head>
-  <body class="<%= typeof appMode !== "undefined" && appMode === "erp" ? "erp-body" : "" %>">
-    <% if (typeof appMode === "undefined" || appMode !== "erp") { %>
-      <%- include("../includes/navbar.ejs")%>
-    <% } %>
-    <main class="<%= typeof appMode !== "undefined" && appMode === "erp" ? "erp-main" : "container" %>">
-      <% if (typeof appMode === "undefined" || appMode !== "erp") { %>
-        <%- include('../includes/flash.ejs') %>
-      <% } %>
-      <%- body %>
+  <body>
+    <%- include("../includes/navbar.ejs")%>
+    <main class="container">
+      <%- include('../includes/flash.ejs') %> <%- body %>
     </main>
 
-    <% if (typeof appMode === "undefined" || appMode !== "erp") { %>
-      <%- include("../includes/footer.ejs")%>
-    <% } %>
+    <%- include("../includes/footer.ejs")%>
 
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"

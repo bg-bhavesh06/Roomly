@@ -1,8 +1,16 @@
 <% if(showMsg && showMsg.length > 0) {%>
     <div class="alert alert-info alert-dismissible fade show mt-2" role="alert">
-        <h4><%= showMsg %>
-        </h4>
+        <h5><%= showMsg %>
+        </h5>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 <%}%>
 
+
+<% if(errorMsg && errorMsg.length > 0) {%>
+    <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+        <h5><%= errorMsg %>
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<%}%>

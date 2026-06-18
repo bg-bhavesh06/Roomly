@@ -5,16 +5,11 @@ const express = require("express");
 const app = express();
 
 //Port Number..
-let port = 8080;
+const port = 8080;
 
 //localhost Linke
-let link = "http://localhost:8080/erp";
+const link = "http://localhost:8080";
 
-//require the Express-Session...
-const session = require("express-session");
-
-//require the connect-flash for display the short msg to user
-const flash = require("connect-flash");
 //reqired the Mongodb Connection
 const { connectDB } = require("./config/db.js");
 
@@ -30,6 +25,12 @@ app.set("views", path.join(__dirname, "views"));
 //Ejs-Mate Pcakage
 const ejsMate = require("ejs-mate");
 app.engine("ejs", ejsMate);
+
+//require the Express-Session...
+const session = require("express-session");
+
+//Require User Model
+const User = require("./models/user.js");
 
 //public folder
 app.use(express.static(path.join(__dirname, "/public")));
@@ -47,24 +48,55 @@ app.use(
   }),
 );
 
+//reuired the packages for passport
+const passPort = require("passport");
+
+//local strategy username + password
+const LocalStrategy = require("passport-local");
+
+//passport.js Configation
+
+//initizilied the passport.js
+app.use(passPort.initialize());
+
+//Mantain the user session b/w different pages
+//Main the user how are changing the Tab is same or differet
+app.use(passPort.session());
+
+// use static authenticate method of model in LocalStrategy
+//we used the LocalStrategy username + password
+//User.authenticate() method have predefine usercheking function's
+passPort.use(new LocalStrategy(User.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passPort.serializeUser(User.serializeUser());
+passPort.deserializeUser(User.deserializeUser());
+
+//require the connect-flash for display the short msg to user
+const flash = require("connect-flash");
+
 //method to use the flash
 app.use(flash());
 
 //use the flash middleware to use the flash..
 app.use((req, res, next) => {
   res.locals.showMsg = req.flash("show");
+  res.locals.errorMsg = req.flash("error");
+  res.locals.currentUser = req.user;
   next();
 });
 
 //Requires the Routes
 const listingRoutes = require("./router/listing.routing.js"); //require the listing's route
 const reviewRoutes = require("./router/review.routing.js"); //require the Review's Route
+const authRoutes = require("./router/auth.routing.js");
 
 // home Route...
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });
 
+app.use("/auth", authRoutes);
 app.use("/listings", listingRoutes);
 app.use("/listings/:Listid/reviews", reviewRoutes);
 
@@ -74,7 +106,8 @@ app.use((req, res) => {
 
 //Globale middleWare
 app.use((err, req, res, next) => {
-  let { statusCode = 500, message = "Internal Server Error" } = err;
+  const { statusCode = 500, message = "Internal Server Error" } = err;
+
   res.status(statusCode).render("./listing/middlewareError.ejs", { message });
   // next()
 });
@@ -84,7 +117,7 @@ if (require.main === module) {
   connectDB();
 
   app.listen(port, () => {
-    console.log("server is Listen : " + link);
+    console.log(`server is listening: ${link}`);
   });
 }
 

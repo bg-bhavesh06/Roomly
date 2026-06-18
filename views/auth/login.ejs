@@ -1,0 +1,46 @@
+<% layout("/layouts/boilerplat") -%>
+
+
+<div class="container my-3">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10 col-sm-12">
+      <h2 class="mb-4 text-center">Logine</h2>
+
+      <form
+        method="post"
+        action="/auth/login"
+        class="needs-validation"
+        novalidate
+      >
+
+        <div class="mb-3">
+          <label for="usernmae" class="form-label">Username</label>
+          <input
+            name="username"
+            class="form-control"
+            id="username"
+            placeholder="Enter username"
+            required
+          ></input>
+          <div class="invalid-feedback">username is required!</div>
+        </div>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="pass" class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              class="form-control"
+              id="pass"
+              placeholder="Enter Password"
+              required
+            />
+            <div class="invalid-feedback">password is required!</div>
+          </div>
+
+        <button class="btn btn-dark w-100">Login</button>
+      </form>
+    </div>
+  </div>
+</div>

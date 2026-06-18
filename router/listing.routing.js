@@ -19,6 +19,8 @@ const WrapAsync = require("../utils/wrapAsync.js");
 //Server side Validation Schema's
 const { ListingSchema } = require("../schema.js");
 
+const { isLoggin } = require("../middleware/loggedIn.js");
+
 //server validate function for listings.(Comming Form PostMan and Hocpcsock)
 function serverValidateListings(req, res, next) {
   let { error, value } = ListingSchema.validate(req.body);
@@ -47,7 +49,7 @@ router.get(
 );
 
 //creat list Route-C1
-router.get("/new", (req, res) => {
+router.get("/new", isLoggin, (req, res) => {
   res.render("listing/creatList.ejs");
 });
 
@@ -86,6 +88,7 @@ router.post(
 // get the value's to Update route-D1
 router.get(
   "/:Listid/edit",
+  isLoggin,
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;
 
@@ -128,6 +131,7 @@ router.put(
 //Delete Route-E...
 router.delete(
   "/:ListId",
+  isLoggin,
   WrapAsync(async (req, res, next) => {
     const { ListId } = req.params;
     console.log(ListId);
