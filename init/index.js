@@ -15,14 +15,14 @@ const initDB = async () => {
   await Promise.all([
     Listing.deleteMany({}),
     review.deleteMany({}),
-    User.deleteMany({}),
+    // User.deleteMany({}),
   ]);
   console.log("Old Data is Deleted");
 
   //  Map through your data to insert the new key-value pair into each object
   instData.data = instData.data.map((item) => ({
     ...item,
-    owner: "6a32ad62bb32adf27cf71ad4", // Replace with your actual key and value
+    owner: "6a35188d84380774a1f8aba1", // Replace with your actual key and value
   }));
 
   // Insert the newly updated data array

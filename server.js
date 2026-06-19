@@ -83,8 +83,13 @@ app.use(flash());
 
 //use the flash middleware to use the flash..
 app.use((req, res, next) => {
+  //helps to display the Success Msg
   res.locals.showMsg = req.flash("show");
+
+  //helps to display the Error Msg.... Not impliment fully yet but we can to early
   res.locals.errorMsg = req.flash("error");
+
+  //help to display the correct option in navbar( login, signup, logout)
   res.locals.currentUser = req.user;
   next();
 });

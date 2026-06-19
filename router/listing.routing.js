@@ -61,7 +61,10 @@ router.post(
     //this is the long way make the this valuse by Listing objest in creatList.ejs
     // const {title,discription,image,price,location,country} = req.body
     const alllist = new Listing(req.body.Listing);
+
+    // this help to add the owner that user is alwready login
     alllist.owner = req.user._id;
+
     await alllist.save();
 
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
