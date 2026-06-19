@@ -14,12 +14,12 @@
 
         <div class="card-body">
           <p class="card-text">
-            <b></b><br />
-            <%= List.description %><br /><br />
+            <p> Owner : <b><%= List.owner.username%></b> </p>
+            <p><%= List.description %></p>
 
             <b>&#8377;<%= List.price.toLocaleString("en-IN") %></b><br />
             <%= List.location %>, <%= List.country %>
-          </p>
+          </%p>
 
           <div class="d-flex gap-2 mt-3">
             <a

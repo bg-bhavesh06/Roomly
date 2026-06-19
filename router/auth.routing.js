@@ -3,6 +3,7 @@ const express = require("express");
 const User = require("../models/user.js");
 const passport = require("passport");
 const WrapAsync = require("../utils/wrapAsync.js");
+const { SaveCurrentUrl } = require("../middleware/loggedIn.js");
 
 // That return the Router Object.
 // this .Router(); is build-in method in the express.
@@ -42,6 +43,7 @@ router.get("/login", (req, res) => {
 
 router.post(
   "/login",
+  SaveCurrentUrl,
   passport.authenticate("local", {
     failureRedirect: "/auth/login",
     failureFlash: {
@@ -51,7 +53,13 @@ router.post(
   }),
   async (req, res) => {
     req.flash("show", "Login success");
-    res.redirect("/listings");
+
+    console.log(res.locals.CurrentUrl);
+    
+    //this logice help us to redirect that page that user selected main(Add New Listing).
+    //before the login to redirect that seleced page (add New list) after login successfuly
+    const url = res.locals.CurrentUrl || "/listings";
+    res.redirect(url);
   },
 );
 

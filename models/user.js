@@ -13,4 +13,5 @@ const userSchema = new mongoose.Schema({
 //autiomatical create(username) and insert the username + hash + salt and passpord stored in hash field
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+module.exports = User;

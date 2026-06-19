@@ -53,22 +53,6 @@ router.get("/new", isLoggin, (req, res) => {
   res.render("listing/creatList.ejs");
 });
 
-// show Listing Route-B...
-router.get(
-  "/:Listid",
-  WrapAsync(async (req, res, next) => {
-    const { Listid } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(Listid)) {
-      return next(new ExpressError(400, "Invalid ID format"));
-    }
-    const List = await Listing.findById(Listid).populate("reviews");
-    if (!List) {
-      return next(new ExpressError(404, "Listing Is Not Found"));
-    }
-    res.render("listing/show.ejs", { List });
-  }),
-);
-
 //Add in the list Route-C2...
 router.post(
   "/",
@@ -77,11 +61,32 @@ router.post(
     //this is the long way make the this valuse by Listing objest in creatList.ejs
     // const {title,discription,image,price,location,country} = req.body
     const alllist = new Listing(req.body.Listing);
+    alllist.owner = req.user._id;
     await alllist.save();
 
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
     req.flash("show", " New Listing is Added");
     res.redirect("/listings"); //this redirect is mandantri to decied's where we have to display the msg main's which route
+  }),
+);
+
+// show Listing Route-B...
+router.get(
+  "/:Listid",
+  WrapAsync(async (req, res, next) => {
+    const { Listid } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(Listid)) {
+      return next(new ExpressError(400, "Invalid ID format"));
+    }
+    const List = await Listing.findById(Listid)
+      .populate("reviews")
+      //this User populate help to display the all users information instaend of _id
+      .populate("owner");
+
+    if (!List) {
+      return next(new ExpressError(404, "Listing Is Not Found"));
+    }
+    res.render("listing/show.ejs", { List });
   }),
 );
 

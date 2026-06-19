@@ -13,6 +13,9 @@ const link = "http://localhost:8080";
 //reqired the Mongodb Connection
 const { connectDB } = require("./config/db.js");
 
+//mongodb is started
+connectDB();
+
 //Method-override Package
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
@@ -89,7 +92,7 @@ app.use((req, res, next) => {
 //Requires the Routes
 const listingRoutes = require("./router/listing.routing.js"); //require the listing's route
 const reviewRoutes = require("./router/review.routing.js"); //require the Review's Route
-const authRoutes = require("./router/auth.routing.js");
+const authRoutes = require("./router/auth.routing.js"); //require the auth's Route
 
 // home Route...
 app.get("/", (req, res) => {
@@ -100,6 +103,7 @@ app.use("/auth", authRoutes);
 app.use("/listings", listingRoutes);
 app.use("/listings/:Listid/reviews", reviewRoutes);
 
+//page not Found
 app.use((req, res) => {
   res.status(404).render("listing/PageError.ejs");
 });
@@ -107,18 +111,11 @@ app.use((req, res) => {
 //Globale middleWare
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Internal Server Error" } = err;
-
   res.status(statusCode).render("./listing/middlewareError.ejs", { message });
-  // next()
 });
 
-if (require.main === module) {
-  //mongodb is started
-  connectDB();
-
-  app.listen(port, () => {
-    console.log(`server is listening: ${link}`);
-  });
-}
+app.listen(port, () => {
+  console.log(`server is listening: ${link}`);
+});
 
 module.exports = app;

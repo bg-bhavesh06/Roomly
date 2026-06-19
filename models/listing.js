@@ -18,10 +18,10 @@ const listenSchema = new Schema({
   image: {
     type: String,
     default:
-      "https://pics.freeartbackgrounds.com/midle/Sunset_Background-898.jpg",
+      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60",
     set: (v) =>
       v === ""
-        ? "https://pics.freeartbackgrounds.com/midle/Sunset_Background-898.jpg"
+        ? "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60"
         : v,
   },
   price: {
@@ -40,6 +40,10 @@ const listenSchema = new Schema({
       ref: "Review",
     },
   ],
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 //Mongoose Middleware to check... if listing delete we have to delete the it review's also

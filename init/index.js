@@ -1,6 +1,7 @@
 // Model Required listing
 const Listing = require("../models/listing.js");
 const review = require("../models/reviews.js");
+const User = require("../models/user.js");
 
 //reqired the Mongodb Connection
 const { connectDB } = require("../config/db.js");
@@ -8,20 +9,34 @@ const { connectDB } = require("../config/db.js");
 // required the data.js
 const instData = require("./data.js");
 
-// Mongoose Connection
-connectDB();
-
+// Ensure connectDB is only called once inside main()
 const initDB = async () => {
-  await Listing.deleteMany({});
-  await review.deleteMany({});
-  await await Listing.insertMany(instData.data);
+  // Delete old data at time to save time
+  await Promise.all([
+    Listing.deleteMany({}),
+    review.deleteMany({}),
+    User.deleteMany({}),
+  ]);
   console.log("Old Data is Deleted");
+
+  //  Map through your data to insert the new key-value pair into each object
+  instData.data = instData.data.map((item) => ({
+    ...item,
+    owner: "6a32ad62bb32adf27cf71ad4", // Replace with your actual key and value
+  }));
+
+  // Insert the newly updated data array
+  await Listing.insertMany(instData.data);
   console.log("And New Data is Inserted");
 };
 
 const main = async () => {
-  await connectDB();
-  await initDB();
+  try {
+    await connectDB(); // the database connection
+    await initDB();
+  } catch (error) {
+    console.error("Database initialization failed:", error);
+  }
 };
 
 main();
