@@ -22,6 +22,13 @@ const WrapAsync = require("../utils/wrapAsync.js");
 //Server side Validation Schema's
 const { ReviewSchema } = require("../schema.js");
 
+//middleware's...
+const {
+  isLoggin,
+  isAccessReview,
+  isLogginReview,
+} = require("../middleware/checking.js");
+
 //ServerSide Validation function for reviews .(Comming Form PostMan and Hocpcsock)
 function serverValidateReviews(req, res, next) {
   let { error, value } = ReviewSchema.validate(req.body);
@@ -47,6 +54,7 @@ function serverValidateReviews(req, res, next) {
 router.post(
   "/",
   serverValidateReviews,
+  isLoggin,
   WrapAsync(async (req, res) => {
     const { Listid } = req.params;
 
@@ -54,31 +62,39 @@ router.post(
       return next(new ExpressError(404, "ID is not Found"));
     }
 
-    let rev = await Listing.findById(req.params.Listid); //Get that List that user clicked..
+    let List = await Listing.findById(req.params.Listid); //Get that List that user clicked..
     // console.log(rev);
-    if (!rev) {
+    if (!List) {
       return next(new ExpressError(404, "Id is Not Found"));
     }
 
-    let newReview = new Review(req.body.reviews); //inserting the review Data inthe Review Model...
-    console.log(newReview);
+    const reviewData = {
+      ...req.body.reviews,
+      rating: req.body.reviews?.rating || 1,
+    };
+    let newReview = new Review(reviewData); //inserting the review Data inthe Review Model...
+    newReview.author = req.user._id;
+    console.log("whyyyyyy");
+    console.log(newReview.author._id);
 
-    rev.reviews.push(newReview);
+    List.reviews.push(newReview);
 
     await newReview.save(); //wait for adding the reviews data in the reviews Model
-    let ans = await rev.save();
-    console.log(ans);
+    let ans = await List.save();
+    // console.log(ans);
 
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
     req.flash("show", "New Review is Added"); //this redirect is mandantri to decied's where we have to display the msg main's which route
 
-    res.redirect(`/listings/${rev._id}`);
+    res.redirect(`/listings/${List._id}`);
   }),
 );
 
 //Delete The Review Route-G
 router.delete(
   "/:Reviewid/delete",
+  isLogginReview,
+  isAccessReview,
   WrapAsync(async (req, res) => {
     let { Listid, Reviewid } = req.params;
 

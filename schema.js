@@ -14,7 +14,7 @@ const ListingSchema = Joi.object({
 
 const ReviewSchema = Joi.object({
   reviews: Joi.object({
-    rating: Joi.number().required().min(1).max(5),
+    rating: Joi.number().min(1).max(5).default(1),
     Comment: Joi.string().required(),
   }).required(),
 });

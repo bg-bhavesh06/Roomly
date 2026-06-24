@@ -16,13 +16,8 @@ const listenSchema = new Schema({
     type: String,
   },
   image: {
-    type: String,
-    default:
-      "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60",
-    set: (v) =>
-      v === ""
-        ? "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=60"
-        : v,
+    url: String,
+    filename: String,
   },
   price: {
     type: Number,

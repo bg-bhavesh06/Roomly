@@ -1,4 +1,6 @@
-require("dotenv").config();
+if (process.env.NODE_ENV != "production") {
+  require("dotenv").config();
+}
 
 // Express Package
 const express = require("express");
@@ -90,7 +92,7 @@ app.use((req, res, next) => {
   res.locals.errorMsg = req.flash("error");
 
   //help to display the correct option in navbar( login, signup, logout)
-  res.locals.currentUser = req.user;
+  res.locals.CurrentUser = req.user;
   next();
 });
 
@@ -106,7 +108,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/listings", listingRoutes);
-app.use("/listings/:Listid/reviews", reviewRoutes);
+app.use("/listings/:Listid", reviewRoutes);
 
 //page not Found
 app.use((req, res) => {

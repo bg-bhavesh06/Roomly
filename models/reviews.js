@@ -9,11 +9,15 @@ const ReviewsSchema = new mongoose.Schema({
     type: Number,
     min: 1,
     max: 5,
-    require: true,
+    default: 1,
   },
   createdAt: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
+  },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
 });
 const Review = mongoose.model("Review", ReviewsSchema);

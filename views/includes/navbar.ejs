@@ -15,13 +15,19 @@
         <a class="nav-link" href="/listings">All List</a>
         <a class="nav-link" href="/listings/new">Add New List</a>
       </div>
+
+       <div class="ms-auto">
+        <% if(CurrentUser){ %>
+           <h4> UserName: &nbsp; <%=  CurrentUser.username %></h4>
+        <% } %>
+    </div>
       <div class="navbar-nav ms-auto">
 
         <!-- this will done by locals varibles (res.locals.currentUser) -->
-        <% if(currentUser){ %> 
+        <% if(CurrentUser){ %> 
           <a class="nav-link" href="/auth/logout">LogOut</a>
        <%  } %> 
-       <% if(!currentUser){ %> 
+       <% if(!CurrentUser){ %> 
         <a class="nav-link" href="/auth/signup">SignUp</a>
         <a class="nav-link" href="/auth/login">LogIN</a>
       <%  } %>   
