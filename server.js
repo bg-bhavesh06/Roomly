@@ -2,6 +2,10 @@ if (process.env.NODE_ENV != "production") {
   require("dotenv").config();
 }
 
+//this help to change the dns service for MongoDB Atls...
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
 // Express Package
 const express = require("express");
 const app = express();

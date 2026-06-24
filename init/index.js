@@ -1,10 +1,15 @@
+require("dotenv").config({ path: "../.env" });
+
+const dns = require("dns");
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+
+//reqired the Mongodb Connection
+const { connectDB } = require("../config/db.js");
+
 // Model Required listing
 const Listing = require("../models/listing.js");
 const review = require("../models/reviews.js");
 const User = require("../models/user.js");
-
-//reqired the Mongodb Connection
-const { connectDB } = require("../config/db.js");
 
 // required the data.js
 const instData = require("./data.js");
@@ -30,10 +35,16 @@ const initDB = async () => {
   console.log("And New Data is Inserted");
 };
 
+const inserUser = async () => {
+  const user = await User.find({});
+  console.log(user);
+};
+
 const main = async () => {
   try {
     await connectDB(); // the database connection
-    await initDB();
+    await inserUser();
+    // await initDB();
   } catch (error) {
     console.error("Database initialization failed:", error);
   }
