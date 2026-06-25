@@ -26,7 +26,7 @@ const initDB = async () => {
 
   //  Map through your data to insert the new key-value pair into each object
   instData.data = instData.data.map((item) => ({
-    ...item,
+    ...item, //with each and every seeds...
     owner: "6a35188d84380774a1f8aba1", // Replace with your actual key and value
   }));
 

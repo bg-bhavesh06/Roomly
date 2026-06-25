@@ -1,3 +1,4 @@
+//This is the configration with (Coludinary) with (multer-stroage-cloudinary)
 const cloudinary = require("cloudinary").v2;
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
@@ -10,8 +11,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "AirBnb",
-    allFormate: ["png", "jpg", "jpeg"],
+    folder: "AirBnb", //this will create the root directory of image in coludinary
+    allFormate: ["png", "jpg", "jpeg", "pdf"], // this allow us to take the formate of the images
   },
 });
 

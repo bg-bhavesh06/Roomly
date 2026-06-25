@@ -3,8 +3,8 @@ const Review = require("../models/reviews");
 
 //this logice is help to check that.
 //whatever the user can do the action.
-// Is he verified user ? or not at each and every Activity.
-module.exports.isLoggin = (req, res, next) => {
+// Is he logged-in user ? or not at each.
+module.exports.isLogginList = (req, res, next) => {
   if (!req.isAuthenticated()) {
     //This logic help user to back the priviouly page before is clicked login like (Add New Listings)
     //User clicked we get (Add New List) URl path...
@@ -35,7 +35,7 @@ module.exports.SaveCurrentUrl = (req, res, next) => {
   next();
 };
 
-//This logic help is this User is the Owner of list that acess For( Edit or delete functinolity)
+//This logic help is this User? is the Owner of (listings) that acess For( Edit or delete functinolity)
 module.exports.isAccessList = async (req, res, next) => {
   const { Listid } = req.params;
   let List = await Listing.findById(Listid);
@@ -50,7 +50,7 @@ module.exports.isAccessList = async (req, res, next) => {
   }
 };
 
-//This logic help is this User is the Owner of Reviews that acess For(delete functinolity)
+//This logic help is this User? is the Owner of (Reviews) that acess For(delete functinolity)
 module.exports.isAccessReview = async (req, res, next) => {
   const { Listid, Reviewid } = req.params;
   let review = await Review.findById(Reviewid);
@@ -74,6 +74,5 @@ module.exports.isLogginReview = (req, res, next) => {
     req.flash("show", "You Must login");
     return res.redirect("/auth/login");
   }
-
   next();
 };

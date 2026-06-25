@@ -20,7 +20,7 @@ const WrapAsync = require("../utils/wrapAsync.js");
 const { ListingSchema } = require("../schema.js");
 
 //middleware access...
-const { isLoggin, isAccessList } = require("../middleware/checking.js");
+const { isLogginList, isAccessList } = require("../middleware/checking.js");
 
 //use multer to parese the file/image like data...
 const multer = require("multer");
@@ -57,14 +57,14 @@ router.get(
 );
 
 //creat list Route-C1
-router.get("/new", isLoggin, (req, res) => {
+router.get("/new", isLogginList, (req, res) => {
   res.render("listing/creatList.ejs");
 });
 
 //Add in the list Route-C2...
 router.post(
   "/",
-  isLoggin,
+  isLogginList,
   // serverValidateListings,
   upload.single("Listing[image]"),
   WrapAsync(async (req, res) => {
@@ -118,7 +118,7 @@ router.get(
 // get the value's to Update route-D1
 router.get(
   "/:Listid/edit",
-  isLoggin,
+  isLogginList,
   isAccessList,
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;
@@ -139,7 +139,7 @@ router.get(
 //Updated List Route-D2...
 router.put(
   "/:Listid",
-  isLoggin,
+  isLogginList,
   isAccessList,
   serverValidateListings,
   WrapAsync(async (req, res, next) => {
@@ -164,7 +164,7 @@ router.put(
 //Delete Route-E...
 router.delete(
   "/:Listid",
-  isLoggin,
+  isLogginList,
   isAccessList,
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;

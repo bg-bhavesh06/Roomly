@@ -24,7 +24,6 @@ const { ReviewSchema } = require("../schema.js");
 
 //middleware's...
 const {
-  isLoggin,
   isAccessReview,
   isLogginReview,
 } = require("../middleware/checking.js");
@@ -37,6 +36,7 @@ function serverValidateReviews(req, res, next) {
     console.dir(error);
     console.dir(value);
     //this is who we can display and handle the custome Error's...
+
     // if (value.reviews.rating > 5) {
     //   return next(new ExpressError(404, "His is not Required the Rating"));
     // }
@@ -54,7 +54,7 @@ function serverValidateReviews(req, res, next) {
 router.post(
   "/",
   serverValidateReviews,
-  isLoggin,
+  isLogginReview,
   WrapAsync(async (req, res) => {
     const { Listid } = req.params;
 
@@ -63,7 +63,6 @@ router.post(
     }
 
     let List = await Listing.findById(req.params.Listid); //Get that List that user clicked..
-    // console.log(rev);
     if (!List) {
       return next(new ExpressError(404, "Id is Not Found"));
     }
