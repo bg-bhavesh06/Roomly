@@ -28,8 +28,15 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
     />
+    <link rel="stylesheet" href="/CSS/loader.css" />
   </head>
   <body>
+    <!-- Global Loader (Hidden by default) -->
+    <div class="dot-loader" id="global-loader">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
     <%- include("../includes/navbar.ejs")%>
     <main class="container">
       <%- include('../includes/flash.ejs') %> <%- body %>
@@ -42,5 +49,6 @@
       integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
       crossorigin="anonymous"
     ></script>
+    <script src="/JS/loader.js"></script>
   </body>
 </html>

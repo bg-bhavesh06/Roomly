@@ -23,10 +23,7 @@ const WrapAsync = require("../utils/wrapAsync.js");
 const { ReviewSchema } = require("../schema.js");
 
 //middleware's...
-const {
-  isAccessReview,
-  isLogginReview,
-} = require("../middleware/checking.js");
+const { isAccessReview, isLogginReview } = require("../middleware/checking.js");
 
 //ServerSide Validation function for reviews .(Comming Form PostMan and Hocpcsock)
 function serverValidateReviews(req, res, next) {
@@ -80,7 +77,7 @@ router.post(
 
     await newReview.save(); //wait for adding the reviews data in the reviews Model
     let ans = await List.save();
-    // console.log(ans);
+    console.log(ans);
 
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
     req.flash("show", "New Review is Added"); //this redirect is mandantri to decied's where we have to display the msg main's which route

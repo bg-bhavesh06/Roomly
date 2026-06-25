@@ -35,16 +35,10 @@ const initDB = async () => {
   console.log("And New Data is Inserted");
 };
 
-const inserUser = async () => {
-  const user = await User.find({});
-  console.log(user);
-};
-
 const main = async () => {
   try {
     await connectDB(); // the database connection
-    await inserUser();
-    // await initDB();
+    await initDB();
   } catch (error) {
     console.error("Database initialization failed:", error);
   }

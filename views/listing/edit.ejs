@@ -9,6 +9,7 @@
         method="post"
         action="/listings/<%= alllist._id %>?_method=PUT"
         class="needs-validation"
+        enctype="multipart/form-data"
         novalidate
       >
         <div class="mb-3">
@@ -42,14 +43,13 @@
         <div class="mb-3">
           <label for="Img" class="form-label">Image URL</label>
           <input
-            type="text"
+            type="file"
             name="Listing[image]"
             class="form-control"
             id="Img"
-            value="<%= alllist.image %>"
             required
           />
-          <div class="invalid-feedback">Please enter an image URL.</div>
+          <div class="invalid-feedback">Please Upload New image.</div>
         </div>
 
         <div class="row">

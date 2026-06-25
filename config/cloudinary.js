@@ -12,7 +12,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "AirBnb", //this will create the root directory of image in coludinary
-    allFormate: ["png", "jpg", "jpeg", "pdf"], // this allow us to take the formate of the images
+    allFormate: ["png", "jpg", "jpeg"], // this allow us to take the formate of the images
   },
 });
 

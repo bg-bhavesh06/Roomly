@@ -73,7 +73,7 @@ router.post(
     const alllist = new Listing(req.body.Listing);
 
     //this will help to inser the image to database..
-    const { path: url, filename: filename } = req.file;
+    const { path: url, originalname: filename } = req.file;
     //we have to right the same name that we define in the schema
     alllist.image = { url, filename };
 
@@ -141,7 +141,8 @@ router.put(
   "/:Listid",
   isLogginList,
   isAccessList,
-  serverValidateListings,
+  // serverValidateListings,
+  upload.single("Listing[image]"),
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;
 
@@ -149,15 +150,25 @@ router.put(
       return next(new ExpressError(400, "Invalid ID format"));
     }
     const updated = req.body.Listing;
+
     const ans = await Listing.findByIdAndUpdate(Listid, updated, { new: true });
+
+    if (req.file) {
+      //this will help to inser the updated image to database..
+      const { path: url, originalname: filename } = req.file;
+      //we have to right the same name that we define in the schema
+      ans.image = { url, filename };
+      ans.save();
+    }
 
     if (!ans) {
       return next(new ExpressError(404, "Listing Is Not Found"));
     }
-    console.log(ans);
+
+    // console.log(ans);
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
     req.flash("show", "Listing is Updated"); //this redirect is mandantri to decied's where we have to display the msg main's which route
-    res.redirect("/listings");
+    res.redirect(`/listings/${Listid}`);
   }),
 );
 
