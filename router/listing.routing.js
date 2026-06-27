@@ -29,6 +29,16 @@ const { storage } = require("../config/cloudinary.js");
 //the (storage) = we passeed inside multer...
 const upload = multer({ storage });
 
+//Map configuration set-up
+//we used the SDK way to convert the forwaredGeoCoding okyyy
+
+//Get the token to set-up the client...
+const mapToken = process.env.MAP_TOKEN;
+//reuired the SDK form (npm install @mapbox/mapbox-sdk)...
+const mapGeoCoding = require("@mapbox/mapbox-sdk/services/geocoding.js");
+//set the client...geoCodingClient...
+const geocodingClient = mapGeoCoding({ accessToken: mapToken });
+
 //server validate function for listings.(Comming Form PostMan and Hocpcsock)
 function serverValidateListings(req, res, next) {
   let { error, value } = ListingSchema.validate(req.body);
@@ -56,18 +66,29 @@ router.get(
   }),
 );
 
-//creat list Route-C1
+//display the creat list form Route-C1
 router.get("/new", isLogginList, (req, res) => {
   res.render("listing/creatList.ejs");
 });
 
-//Add in the list Route-C2...
+//creating the listing Route-C2...
 router.post(
   "/",
   isLogginList,
   // serverValidateListings,
-  upload.single("Listing[image]"),
+  upload.single("Listing[image]"), //this will upload the img's file on the cloudinary
   WrapAsync(async (req, res) => {
+    //the (resp) variable get the calculated location coordinates..
+    const resp = await geocodingClient
+      .forwardGeocode({
+        query: req.body.Listing.location, //here we get the user typed location
+        limit: 1,
+      })
+      .send();
+    // Note thie mapBox return the first (lng) then (lat)
+    // E=lng N=lat
+    // [N=21°56'39.3, E=75°08'20.8] but normal approch is first(lat) then (lng)
+
     //this is the long way make the this valuse by Listing objest in creatList.ejs
     // const {title,discription,image,price,location,country} = req.body
     const alllist = new Listing(req.body.Listing);
@@ -80,13 +101,18 @@ router.post(
     // this help to add the owner that user is alwready login
     alllist.owner = req.user._id;
 
-    await alllist.save();
+    //stroing the cooridinated...
+    alllist.geometry = resp.body.features[0].geometry;
+
+    const ans = await alllist.save();
+    console.log(ans);
 
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
     req.flash("show", " New Listing is Added");
     res.redirect("/listings"); //this redirect is mandantri to decied's where we have to display the msg main's which route
   }),
 );
+
 // router.post("/", upload.single("Listing[image]"), (req, res) => {
 //   res.send(req.file);
 // });
@@ -142,7 +168,7 @@ router.put(
   isLogginList,
   isAccessList,
   // serverValidateListings,
-  upload.single("Listing[image]"),
+  upload.single("Listing[image]"), //this will upload the img's file on the cloudinary
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;
 

@@ -9,7 +9,6 @@ const { connectDB } = require("../config/db.js");
 // Model Required listing
 const Listing = require("../models/listing.js");
 const review = require("../models/reviews.js");
-const User = require("../models/user.js");
 
 // required the data.js
 const instData = require("./data.js");

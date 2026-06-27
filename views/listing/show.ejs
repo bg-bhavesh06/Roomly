@@ -1,5 +1,11 @@
 <%- layout("/layouts/boilerplat") %>
 
+<!-- for the Map Logic Beacuse the (process.env) in not accessable in public folder (JS) -->
+<script>
+  const mapToken = "<%= process.env.MAP_TOKEN %>";
+  const coordinate = <%- JSON.stringify(List.geometry.coordinates) %>
+</script>
+
 <div class="container mt-4">
   <div class="row justify-content-center">
     <div class="col-lg-8 col-md-10 col-sm-12">
@@ -110,11 +116,9 @@
               <button class="btn btn-danger">Submit</button>
             </form>
           </div>
-          <hr />
-          <br />
-          <p><b>All Reviews</b></p>
-           <div class="row">
+          <div class="row">
             <% for(review of List.reviews) { %>
+              <p><b>All Reviews</b></p>
               <div class="card review-card col-5 ms-3 mb-3">
                   <div class="card-body">
                    <% if(review.author){ %>
@@ -140,8 +144,14 @@
          </div>
         </div>
       </div>
+      <br>
+      <div class="mb-3">
+        <h4 class="row justify-content-center">Your Location</h4>
+        <div id="map"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<script src="/JS/formValidate.js"></script>
+
+<script src="/JS/map.js"></script>

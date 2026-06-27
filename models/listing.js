@@ -39,6 +39,18 @@ const listenSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
   },
+
+  geometry: {
+    type: {
+      type: String, //don't write directly type:string
+      enum: ["Point"],
+      required: true,
+    },
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+  },
 });
 
 //Mongoose Middleware to check... if listing delete we have to delete the it review's also

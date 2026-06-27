@@ -70,9 +70,6 @@ router.post(
     };
     let newReview = new Review(reviewData); //inserting the review Data inthe Review Model...
     newReview.author = req.user._id;
-    console.log("whyyyyyy");
-    console.log(newReview.author._id);
-
     List.reviews.push(newReview);
 
     await newReview.save(); //wait for adding the reviews data in the reviews Model
@@ -102,7 +99,7 @@ router.delete(
     let DeletedReview = await Review.findByIdAndDelete(Reviewid);
     // console.log(DeletedReview);
     if (!DeletedReview) {
-      return next(new ExpressError(404, "Review is not delted"));
+      return next(new ExpressError(404, "Review is not deleted"));
     }
 
     //hear review id is deleted that present in the Listings schema
