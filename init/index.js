@@ -1,5 +1,6 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 
+//this help to change the dns service for MongoDB Atls...
 const dns = require("dns");
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
@@ -27,6 +28,7 @@ const initDB = async () => {
   instData.data = instData.data.map((item) => ({
     ...item, //with each and every seeds...
     owner: "6a35188d84380774a1f8aba1", // Replace with your actual key and value
+    geometry: { type: "Point", coordinates: [77.209, 28.6139] },
   }));
 
   // Insert the newly updated data array

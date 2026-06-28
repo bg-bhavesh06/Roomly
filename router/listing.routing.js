@@ -75,7 +75,7 @@ router.get("/new", isLogginList, (req, res) => {
 router.post(
   "/",
   isLogginList,
-  // serverValidateListings,
+  serverValidateListings,
   upload.single("Listing[image]"), //this will upload the img's file on the cloudinary
   WrapAsync(async (req, res) => {
     //the (resp) variable get the calculated location coordinates..
@@ -167,7 +167,7 @@ router.put(
   "/:Listid",
   isLogginList,
   isAccessList,
-  // serverValidateListings,
+  serverValidateListings,
   upload.single("Listing[image]"), //this will upload the img's file on the cloudinary
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;
@@ -175,23 +175,35 @@ router.put(
     if (!mongoose.Types.ObjectId.isValid(Listid)) {
       return next(new ExpressError(400, "Invalid ID format"));
     }
+
+    //the (resp) variable get the calculated location coordinates..
+    const resp = await geocodingClient
+      .forwardGeocode({
+        query: req.body.Listing.location,
+        limit: 1,
+      })
+      .send();
+
     const updated = req.body.Listing;
 
+    //stroing the cooridinated...
+    updated.geometry = resp.body.features[0].geometry;
+
     const ans = await Listing.findByIdAndUpdate(Listid, updated, { new: true });
+    // console.log(ans);
+
+    if (!ans) {
+      return next(new ExpressError(404, "Listing Is Not Found"));
+    }
 
     if (req.file) {
       //this will help to inser the updated image to database..
       const { path: url, originalname: filename } = req.file;
       //we have to right the same name that we define in the schema
       ans.image = { url, filename };
-      ans.save();
+      await ans.save();
     }
 
-    if (!ans) {
-      return next(new ExpressError(404, "Listing Is Not Found"));
-    }
-
-    // console.log(ans);
     //in this way we sand the short-Msg to user. tha remove automaticaly after first refereshPage
     req.flash("show", "Listing is Updated"); //this redirect is mandantri to decied's where we have to display the msg main's which route
     res.redirect(`/listings/${Listid}`);
