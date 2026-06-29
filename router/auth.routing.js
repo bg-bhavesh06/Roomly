@@ -33,6 +33,7 @@ router.post(
           res.redirect("/listings");
         }
       });
+      req.session.isLoggedIn = true;
     } catch (err) {
       req.flash("error", err.message);
       res.redirect("/auth/signup");
@@ -65,6 +66,7 @@ router.post(
     //before the login to redirect that seleced page (add New list) after login successfuly
     const url = res.locals.CurrentUrl || "/listings";
     delete req.session.redirectUrl;
+    req.session.isLoggedIn = true;
     console.log("This the login Path");
     console.log(res.locals.CurrentUrl);
     res.redirect(url);

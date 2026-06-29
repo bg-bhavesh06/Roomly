@@ -54,11 +54,20 @@ function serverValidateListings(req, res, next) {
   }
 }
 
+//Safe form again and again login
+function saftToLogin(req, res, next) {
+  if (!req.session.isLoggedIn) {
+    res.redirect("/auth/login");
+  }
+  next();
+}
+
 //listing routes
 
 // display the list route-A...
 router.get(
   "/",
+  saftToLogin,
   WrapAsync(async (req, res) => {
     const allListing = await Listing.find({}); //
     res.render("listing/allListing.ejs", { allListing });
@@ -74,6 +83,7 @@ router.get("/new", isLogginList, (req, res) => {
 //creating the listing Route-C2...
 router.post(
   "/",
+  saftToLogin,
   isLogginList,
   serverValidateListings,
   upload.single("Listing[image]"), //this will upload the img's file on the cloudinary
@@ -120,6 +130,7 @@ router.post(
 // show Listing Route-B...
 router.get(
   "/:Listid",
+  saftToLogin,
   WrapAsync(async (req, res, next) => {
     const { Listid } = req.params;
     if (!mongoose.Types.ObjectId.isValid(Listid)) {
@@ -144,6 +155,7 @@ router.get(
 // get the value's to Update route-D1
 router.get(
   "/:Listid/edit",
+  saftToLogin,
   isLogginList,
   isAccessList,
   WrapAsync(async (req, res, next) => {
@@ -165,6 +177,7 @@ router.get(
 //Updated List Route-D2...
 router.put(
   "/:Listid",
+  saftToLogin,
   isLogginList,
   isAccessList,
   serverValidateListings,
@@ -213,6 +226,7 @@ router.put(
 //Delete Route-E...
 router.delete(
   "/:Listid",
+  saftToLogin,
   isLogginList,
   isAccessList,
   WrapAsync(async (req, res, next) => {
