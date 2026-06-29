@@ -37,6 +37,7 @@ app.engine("ejs", ejsMate);
 
 //require the Express-Session...
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 
 //Require User Model
 const User = require("./models/user.js");
@@ -47,13 +48,25 @@ app.use(express.static(path.join(__dirname, "/public")));
 //Parse the data
 app.use(express.urlencoded({ extended: true }));
 
-//Declared the Session to use in the app's
+const MONGO_URL = process.env.MONGO_URI;
+
 app.use(
   session({
-    secret: "bhaveshIsThePowerFull",
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { maxAge: 1000 * 60 * 60 * 2 },
+    saveUninitialized: false,
+    rolling: true,
+
+    store: MongoStore.create({
+      mongoUrl: MONGO_URL,
+      collectionName: "sessions",
+    }),
+
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 6,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    },
   }),
 );
 

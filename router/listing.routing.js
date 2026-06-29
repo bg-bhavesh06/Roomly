@@ -57,7 +57,7 @@ function serverValidateListings(req, res, next) {
 //Safe form again and again login
 function saftToLogin(req, res, next) {
   if (!req.session.isLoggedIn) {
-    res.redirect("/auth/login");
+    return res.redirect("/auth/login");
   }
   next();
 }
