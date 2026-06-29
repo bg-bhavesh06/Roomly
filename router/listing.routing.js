@@ -20,7 +20,11 @@ const WrapAsync = require("../utils/wrapAsync.js");
 const { ListingSchema } = require("../schema.js");
 
 //middleware access...
-const { isLogginList, isAccessList } = require("../middleware/checking.js");
+const {
+  isLogginList,
+  isAccessList,
+  saftToLogin,
+} = require("../middleware/checking.js");
 
 //use multer to parese the file/image like data...
 const multer = require("multer");
@@ -52,14 +56,6 @@ function serverValidateListings(req, res, next) {
   } else {
     next();
   }
-}
-
-//Safe form again and again login
-function saftToLogin(req, res, next) {
-  if (!req.session.isLoggedIn) {
-    return res.redirect("/auth/login");
-  }
-  next();
 }
 
 //listing routes

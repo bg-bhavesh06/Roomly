@@ -76,3 +76,12 @@ module.exports.isLogginReview = (req, res, next) => {
   }
   next();
 };
+
+
+//Safe form again and again login
+module.exports = saftToLogin(req, res, next) {
+  if (!req.session.isLoggedIn) {
+    return res.redirect("/auth/login");
+  }
+  next();
+}
