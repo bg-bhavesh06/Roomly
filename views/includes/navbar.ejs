@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"> <i class="fa-regular fa-compass"></i> </a>
+    <a class="navbar-brand" href="/listings"> <i class="fa-regular fa-compass"></i> </a>
     <button
       class="navbar-toggler"
       type="button"
@@ -12,26 +12,25 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link" href="/listings">All List</a>
+        <a class="nav-link" href="/listings">Exploer</a>
         <a class="nav-link" href="/listings/new">Add New List</a>
       </div>
-
-       <div class="ms-auto">
-        <% if(CurrentUser){ %>
-           <h4> UserName: &nbsp; <%=  CurrentUser.username %></h4>
-        <% } %>
-    </div>
       <div class="navbar-nav ms-auto">
-
-        <!-- this will done by locals varibles (res.locals.currentUser) -->
-        <% if(CurrentUser){ %> 
-          <a class="nav-link" href="/auth/logout">LogOut</a>
-       <%  } %> 
-       <% if(!CurrentUser){ %> 
-        <a class="nav-link" href="/auth/signup">SignUp</a>
-        <a class="nav-link" href="/auth/login">LogIN</a>
-      <%  } %>   
+        <form class="d-flex" role="search">
+           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+           <button class="btn btn-outline-success" type="submit">Search</button>
+         </form>
       </div>
-    </div>
+        <div class="navbar-nav ms-auto">
+
+            <!-- this will done by locals varibles (res.locals.currentUser) -->
+            <% if(CurrentUser){ %> 
+              <a class="nav-link" href="/auth/logout">LogOut</a>
+          <%  } %> 
+          <% if(!CurrentUser){ %> 
+            <a class="nav-link" href="/auth/signup">SignUp</a>
+            <a class="nav-link" href="/auth/login">LogIN</a>
+          <%  } %>   
+        </div>
   </div>
 </nav>

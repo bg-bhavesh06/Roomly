@@ -37,6 +37,7 @@ app.engine("ejs", ejsMate);
 
 //require the Express-Session...
 const session = require("express-session");
+//to store the session inthe MongoAtlas
 const MongoStore = require("connect-mongo").default;
 
 //Require User Model
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 //Parse the data
 app.use(express.urlencoded({ extended: true }));
 
+//MongoDB URl..
 const MONGO_URL = process.env.MONGO_URI;
 
 app.use(
