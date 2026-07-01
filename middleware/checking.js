@@ -10,9 +10,6 @@ module.exports.isLogginList = (req, res, next) => {
     //User clicked we get (Add New List) URl path...
     req.session.redirectUrl = req.originalUrl;
 
-    console.log("isLoggin is Called-MW");
-    console.log(req.session.redirectUrl);
-
     req.flash("show", "You Must login");
     return res.redirect("/auth/login");
   }
@@ -29,8 +26,6 @@ module.exports.isLogginList = (req, res, next) => {
 module.exports.SaveCurrentUrl = (req, res, next) => {
   if (req.session.redirectUrl) {
     res.locals.CurrentUrl = req.session.redirectUrl;
-    console.log("SaveCurrentUrl is Called Mw");
-    // console.log("CurrentUrl" + res.locals.CurrentUrl);
   }
   next();
 };
@@ -39,8 +34,6 @@ module.exports.SaveCurrentUrl = (req, res, next) => {
 module.exports.isAccessList = async (req, res, next) => {
   const { Listid } = req.params;
   let List = await Listing.findById(Listid);
-  console.log("this is printed by the isAccess middleware");
-  // console.log(List.owner);
   console.log(res.locals.CurrentUser._id);
   if (List && !List.owner.equals(res.locals.CurrentUser._id)) {
     req.flash("error", "You Not a Owner");
@@ -81,6 +74,7 @@ module.exports.isLogginReview = (req, res, next) => {
 module.exports.saftToLogin = (req, res, next) => {
   if (!req.session.isLoggedIn) {
     return res.redirect("/auth/login");
+  } else {
+    next();
   }
-  next();
 };
