@@ -67,8 +67,6 @@ router.post(
     const url = res.locals.CurrentUrl || "/listings";
     delete req.session.redirectUrl;
     req.session.isLoggedIn = true;
-    console.log("This the login Path");
-    console.log(res.locals.CurrentUrl);
     res.redirect(url);
   },
 );

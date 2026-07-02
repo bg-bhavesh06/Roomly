@@ -11,10 +11,10 @@ const express = require("express");
 const app = express();
 
 //Port Number..
-const port = 8080;
+const port = process.env.PORT || 3000;
 
 //localhost Linke
-const link = "http://localhost:8080";
+const link = "http://localhost:3000";
 
 //reqired the Mongodb Connection
 const { connectDB } = require("./config/db.js");
